@@ -20,11 +20,11 @@ Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
 
 1.  Clone repository ini:
     ```bash
-    git clone [https://github.com/intannz/kasir-api-golang.git](https://github.com/intannz/kasir-api-golang.git)
+    git clone (https://github.com/intannz/kasir-api-golang.git)
     ```
 2.  Masuk ke folder project:
     ```bash
-    cd nama-folder
+    cd kasir-api-golang
     ```
 3.  Jalankan server:
     ```bash
