@@ -17,7 +17,7 @@ Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
 
 ## 🌐 Live Demo
 Aplikasi ini sudah di-deploy menggunakan **Docker** di Hugging Face Spaces dan bisa langsung dites:
-👉 **Link API:** `https://intannzz-kasir-api-golang.hf.space/api/produk`
+👉 **Link API:** `https://intannnzz-kasir-api-golang.hf.space/api/produk`
 
 *(Gunakan Postman atau Browser untuk mengakses link di atas)*
 
