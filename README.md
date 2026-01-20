@@ -11,7 +11,7 @@ short_description: 'RESTful API sederhana untuk manajemen produk kasir.'
 
 # Simple Cashier API (Tugas 1 - Golang)
 
-Ini adalah RESTful API sederhana untuk manajemen produk kasir. Dibuat menggunakan **Golang** (Go) murni tanpa framework pihak ketiga, hanya menggunakan library standar `net/http`.
+Repo ini adalah RESTful API sederhana untuk manajemen produk kasir. Dibuat menggunakan **Golang** (Go) murni tanpa framework pihak ketiga, hanya menggunakan library standar `net/http`.
 
 Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
 
