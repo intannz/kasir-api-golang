@@ -1,8 +1,25 @@
+---
+title: Kasir Api Golang
+emoji: 🦀
+colorFrom: red
+colorTo: red
+sdk: docker
+pinned: false
+license: mit
+short_description: 'RESTful API sederhana untuk manajemen produk kasir.'
+---
+
 # Simple Cashier API (Tugas 1 - Golang)
 
 Ini adalah RESTful API sederhana untuk manajemen produk kasir. Dibuat menggunakan **Golang** (Go) murni tanpa framework pihak ketiga, hanya menggunakan library standar `net/http`.
 
 Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
+
+## 🌐 Live Demo
+Aplikasi ini sudah di-deploy menggunakan **Docker** di Hugging Face Spaces dan bisa langsung dites:
+👉 **Link API:** `https://intannzz-kasir-api-golang.hf.space/api/produk`
+
+*(Gunakan Postman atau Browser untuk mengakses link di atas)*
 
 ## 🚀 Fitur
 
@@ -15,12 +32,13 @@ Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
 
 * Golang (v1.20+)
 * Standard Library (`net/http`, `encoding/json`)
+* Docker & Hugging Face Spaces (Deployment)
 
-## 📦 Cara Menjalankan (Run)
+## 📦 Cara Menjalankan (Local)
 
 1.  Clone repository ini:
     ```bash
-    git clone (https://github.com/intannz/kasir-api-golang.git)
+    git clone https://github.com/intannz/kasir-api-golang.git
     ```
 2.  Masuk ke folder project:
     ```bash
@@ -30,7 +48,7 @@ Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
     ```bash
     go run main.go
     ```
-4.  Server akan berjalan di `http://localhost:8080`.
+4.  Server akan berjalan di `http://localhost:7860`.
 
 ## 🔗 Dokumentasi API
 
@@ -48,7 +66,7 @@ Gunakan Postman atau cURL untuk mengetes endpoint berikut:
 ## 📝 Catatan
 
 * Data disimpan sementara di memori (Slice), data akan reset jika server dimatikan.
-* Port server bersifat dinamis (mengikuti environment variable `PORT`) atau default ke `8080` jika dijalankan di lokal.
+* Port server bersifat dinamis (mengikuti environment variable `PORT`) atau default ke `7860` jika dijalankan di lokal.
 
 ---
 **Happy Building! 🚀**
