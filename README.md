@@ -1,38 +1,29 @@
----
-title: Kasir Api Golang
-emoji: 🦀
-colorFrom: red
-colorTo: red
-sdk: docker
-pinned: false
-license: mit
-short_description: 'RESTful API sederhana untuk manajemen produk kasir.'
----
-
 # Simple Cashier API (Tugas 1 - Golang)
 
-Repo ini adalah RESTful API sederhana untuk manajemen produk kasir. Dibuat menggunakan **Golang** (Go) murni tanpa framework pihak ketiga, hanya menggunakan library standar `net/http`.
+Repo ini adalah RESTful API sederhana untuk manajemen produk dan kategori kasir. Dibuat menggunakan **Golang** (Go) murni tanpa framework pihak ketiga, hanya menggunakan library standar `net/http` dan **Swagger** untuk dokumentasi.
 
 Project ini dibuat untuk memenuhi tugas pemrograman backend menggunakan Golang.
 
-## 🌐 Live Demo
-Aplikasi ini sudah di-deploy menggunakan **Docker** di Hugging Face Spaces dan bisa langsung dites:
-👉 **Link API:** `https://intannnzz-kasir-api-golang.hf.space/api/produk`
+## 🌐 Live Demo & Dokumentasi
+Aplikasi ini sudah di-deploy menggunakan **Zeabur** dan memiliki dokumentasi lengkap via **Swagger UI**.
 
-*(Gunakan Postman atau Browser untuk mengakses link di atas)*
+👉 **Akses Dokumentasi API (Swagger):**
+`https://kasir-api-toko.zeabur.app/swagger/index.html`
+
 
 ## 🚀 Fitur
 
-* **Create:** Menambahkan data produk baru.
-* **Read:** Melihat semua produk atau satu produk spesifik.
-* **Update:** Mengubah data produk (Nama, Harga, Stok).
-* **Delete:** Menghapus data produk.
+* **Manajemen Produk:** Create, Read, Update, Delete (CRUD) data produk.
+* **Manajemen Kategori:** Create, Read, Update, Delete (CRUD) data kategori.
+* **In-Memory Storage:** Penyimpanan data sementara menggunakan Slice/Array.
+* **API Documentation:** Dokumentasi otomatis menggunakan Swagger.
 
 ## 🛠️ Teknologi
 
-* Golang (v1.20+)
-* Standard Library (`net/http`, `encoding/json`)
-* Docker & Hugging Face Spaces (Deployment)
+* **Golang** (v1.20+)
+* **Standard Library** (`net/http`, `encoding/json`)
+* **Swaggo** (Untuk generate Swagger Docs)
+* **Zeabur** (Deployment Platform)
 
 ## 📦 Cara Menjalankan (Local)
 
@@ -48,25 +39,34 @@ Aplikasi ini sudah di-deploy menggunakan **Docker** di Hugging Face Spaces dan b
     ```bash
     go run main.go
     ```
-4.  Server akan berjalan di `http://localhost:7860`.
+4.  Buka Swagger di browser:
+    `http://localhost:8080/swagger/index.html`
 
-## 🔗 Dokumentasi API
+## 🔗 Daftar Endpoint Utama
 
-Gunakan Postman atau cURL untuk mengetes endpoint berikut:
+Gunakan Swagger UI untuk pengetesan yang lebih mudah, atau gunakan Postman/cURL:
 
-| Method | Endpoint | Deskripsi | Body Request (JSON) |
+### 🛒 Products
+| Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/produk` | Ambil semua data produk | - |
-| `GET` | `/api/produk/{id}` | Ambil 1 produk (cth: `/api/produk/1`) | - |
-| `POST` | `/api/produk` | Tambah produk baru | `{ "nama": "Barang X", "harga": 5000, "stok": 10 }` |
-| `PUT` | `/api/produk/{id}` | Update data produk | `{ "nama": "Barang X Edit", "harga": 6000, "stok": 10 }` |
-| `DELETE`| `/api/produk/{id}` | Hapus produk | - |
-| `GET` | `/health` | Cek status server | - |
+| `GET` | `/api/products` | Ambil semua produk | - |
+| `GET` | `/api/products/{id}` | Ambil 1 produk | - |
+| `POST` | `/api/products` | Tambah produk | `{ "name": "Latte", "price": 18000, "stock": 20 }` |
+| `PUT` | `/api/products/{id}` | Update produk | `{ "name": "Latte Edit", "price": 20000, "stock": 15 }` |
+| `DELETE`| `/api/products/{id}` | Hapus produk | - |
+
+### 🏷️ Categories
+| Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/categories` | Ambil semua kategori | - |
+| `POST` | `/categories` | Tambah kategori | `{ "name": "Minuman", "description": "Aneka Kopi" }` |
+| `PUT` | `/categories/{id}` | Update kategori | `{ "name": "Beverages", "description": "Coffee & Tea" }` |
+| `DELETE`| `/categories/{id}` | Hapus kategori | - |
 
 ## 📝 Catatan
 
-* Data disimpan sementara di memori (Slice), data akan reset jika server dimatikan.
-* Port server bersifat dinamis (mengikuti environment variable `PORT`) atau default ke `7860` jika dijalankan di lokal.
+* **Data Reset:** Karena menggunakan *In-Memory* (variabel slice), data akan kembali ke default jika server di-restart (deploy ulang).
+* **Environment:** Server berjalan di port `8080` secara default.
 
 ---
 **Happy Building! 🚀**
