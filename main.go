@@ -40,8 +40,8 @@ var products = []Product{
 }
 
 var categories = []Category{
-	{ID: 1, Name: "Snacks", Description: "Light and heavy snacks"},
-	{ID: 2, Name: "Beverages", Description: "All kinds of drinks"},
+	{ID: 1, Name: "Makanan ringan", Description: "Kerupuk dan cemilan"},
+	{ID: 2, Name: "Minuman ringan", Description: "Es teh, es kopi, dan es buah"},
 }
 
 // helper
