@@ -34,7 +34,7 @@ Setelah kategori ada, baru Anda bisa membuat produk. Pastikan `categoryId` diisi
       "name": "Nasi Goreng Spesial",
       "price": 25000,
       "stock": 50,
-      "categoryId": 1  <-- Wajib ID Kategori yang SUDAH ADA
+      "categoryId": 1
     }
     ```
 
