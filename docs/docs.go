@@ -20,7 +20,7 @@ const docTemplate = `{
     "paths": {
         "/api/products": {
             "get": {
-                "description": "Retrieve a list of all products",
+                "description": "Mengambil daftar semua produk",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,23 +28,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Products"
+                    "2. products"
                 ],
-                "summary": "Get all products",
+                "summary": "Ambil semua produk",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/main.Product"
+                                "$ref": "#/definitions/models.Product"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "description": "Add a new product to the inventory",
+                "description": "Menambahkan data produk ke database",
                 "consumes": [
                     "application/json"
                 ],
@@ -52,176 +52,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Products"
+                    "2. products"
                 ],
-                "summary": "Create a new product",
+                "summary": "Tambah produk baru",
                 "parameters": [
                     {
-                        "description": "Product Data",
-                        "name": "body",
+                        "description": "Data Produk",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.Product"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successfully added new products!",
-                        "schema": {
-                            "$ref": "#/definitions/main.Product"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/products/{id}": {
-            "get": {
-                "description": "Retrieve details of a specific product",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Get a product by ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/main.Product"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update details of a specific product",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Update a product",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Product Data",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/main.Product"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/main.Product"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Remove a product from inventory",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Delete a product",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/main.SuccessResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/categories": {
-            "get": {
-                "description": "Retrieve a list of all categories",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Get all categories",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/main.Category"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Add a new category",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Create a new category",
-                "parameters": [
-                    {
-                        "description": "Category Data",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/main.Category"
+                            "$ref": "#/definitions/models.Product"
                         }
                     }
                 ],
@@ -229,15 +70,15 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/main.Category"
+                            "$ref": "#/definitions/models.Product"
                         }
                     }
                 }
             }
         },
-        "/categories/{id}": {
-            "put": {
-                "description": "Update details of a specific category",
+        "/api/products/{id}": {
+            "get": {
+                "description": "Mendapatkan detail satu produk",
                 "consumes": [
                     "application/json"
                 ],
@@ -245,9 +86,201 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Categories"
+                    "2. products"
                 ],
-                "summary": "Update a category",
+                "summary": "Ambil produk berdasarkan ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Mengubah data produk yang sudah ada",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "2. products"
+                ],
+                "summary": "Update data produk",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Data Update",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Menghapus produk berdasarkan ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "2. products"
+                ],
+                "summary": "Hapus produk",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "description": "Mengambil daftar kategori",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "1. categories"
+                ],
+                "summary": "Ambil semua kategori",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Category"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Membuat kategori baru",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "1. categories"
+                ],
+                "summary": "Tambah kategori",
+                "parameters": [
+                    {
+                        "description": "Data Kategori",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "description": "Mendapatkan kategori berdasarkan ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "1. categories"
+                ],
+                "summary": "Ambil detail kategori",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Category"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Mengubah data kategori",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "1. categories"
+                ],
+                "summary": "Update kategori",
                 "parameters": [
                     {
                         "type": "integer",
@@ -257,12 +290,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Category Data",
-                        "name": "body",
+                        "description": "Data Update",
+                        "name": "category",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.Category"
+                            "$ref": "#/definitions/models.Category"
                         }
                     }
                 ],
@@ -270,13 +303,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.Category"
+                            "$ref": "#/definitions/models.Category"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Remove a category",
+                "description": "Menghapus kategori permanen",
                 "consumes": [
                     "application/json"
                 ],
@@ -284,9 +317,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Categories"
+                    "1. categories"
                 ],
-                "summary": "Delete a category",
+                "summary": "Hapus kategori",
                 "parameters": [
                     {
                         "type": "integer",
@@ -300,7 +333,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.SuccessResponse"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -308,12 +344,12 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.Category": {
+        "models.Category": {
             "type": "object",
             "properties": {
                 "description": {
                     "type": "string",
-                    "example": "Minuman Soda"
+                    "example": "Aneka Jus dan Kopi"
                 },
                 "id": {
                     "type": "integer",
@@ -321,37 +357,36 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string",
-                    "example": "Soda"
+                    "example": "Minuman"
                 }
             }
         },
-        "main.Product": {
+        "models.Product": {
             "type": "object",
             "properties": {
+                "categoryId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "categoryName": {
+                    "type": "string",
+                    "example": "Makanan Berat"
+                },
                 "id": {
                     "type": "integer",
-                    "example": 3
+                    "example": 1
                 },
                 "name": {
                     "type": "string",
-                    "example": "Teh botol"
+                    "example": "Nasi Goreng Spesial"
                 },
                 "price": {
                     "type": "integer",
-                    "example": 3000
+                    "example": 25000
                 },
                 "stock": {
                     "type": "integer",
                     "example": 100
-                }
-            }
-        },
-        "main.SuccessResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Item deleted successfully"
                 }
             }
         }
@@ -365,7 +400,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Kasir API Intan",
-	Description:      "API Kasir Toko (In-Memory)",
+	Description:      "API Kasir Toko dengan Database (Supabase)",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

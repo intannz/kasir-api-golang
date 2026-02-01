@@ -1,43 +1,43 @@
 basePath: /
 definitions:
-  main.Category:
+  models.Category:
     properties:
       description:
-        example: Minuman Soda
+        example: Aneka Jus dan Kopi
         type: string
       id:
         example: 1
         type: integer
       name:
-        example: Soda
+        example: Minuman
         type: string
     type: object
-  main.Product:
+  models.Product:
     properties:
+      categoryId:
+        example: 1
+        type: integer
+      categoryName:
+        example: Makanan Berat
+        type: string
       id:
-        example: 3
+        example: 1
         type: integer
       name:
-        example: Teh botol
+        example: Nasi Goreng Spesial
         type: string
       price:
-        example: 3000
+        example: 25000
         type: integer
       stock:
         example: 100
         type: integer
     type: object
-  main.SuccessResponse:
-    properties:
-      message:
-        example: Item deleted successfully
-        type: string
-    type: object
 info:
   contact:
     email: intan.maharani6763@gmail.com
     name: Intan Maharani
-  description: API Kasir Toko (In-Memory)
+  description: API Kasir Toko dengan Database (Supabase)
   title: Kasir API Intan
   version: "1.0"
 paths:
@@ -45,7 +45,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve a list of all products
+      description: Mengambil daftar semua produk
       produces:
       - application/json
       responses:
@@ -53,142 +53,144 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/main.Product'
+              $ref: '#/definitions/models.Product'
             type: array
-      summary: Get all products
+      summary: Ambil semua produk
       tags:
-      - Products
+      - 2. products
     post:
       consumes:
       - application/json
-      description: Add a new product to the inventory
+      description: Menambahkan data produk ke database
       parameters:
-      - description: Product Data
+      - description: Data Produk
         in: body
-        name: body
+        name: product
         required: true
         schema:
-          $ref: '#/definitions/main.Product'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Successfully added new products!
-          schema:
-            $ref: '#/definitions/main.Product'
-      summary: Create a new product
-      tags:
-      - Products
-  /api/products/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Remove a product from inventory
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.SuccessResponse'
-      summary: Delete a product
-      tags:
-      - Products
-    get:
-      consumes:
-      - application/json
-      description: Retrieve details of a specific product
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.Product'
-      summary: Get a product by ID
-      tags:
-      - Products
-    put:
-      consumes:
-      - application/json
-      description: Update details of a specific product
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Product Data
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/main.Product'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.Product'
-      summary: Update a product
-      tags:
-      - Products
-  /categories:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a list of all categories
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/main.Category'
-            type: array
-      summary: Get all categories
-      tags:
-      - Categories
-    post:
-      consumes:
-      - application/json
-      description: Add a new category
-      parameters:
-      - description: Category Data
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/main.Category'
+          $ref: '#/definitions/models.Product'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/main.Category'
-      summary: Create a new category
+            $ref: '#/definitions/models.Product'
+      summary: Tambah produk baru
       tags:
-      - Categories
+      - 2. products
+  /api/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus produk berdasarkan ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Hapus produk
+      tags:
+      - 2. products
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan detail satu produk
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      summary: Ambil produk berdasarkan ID
+      tags:
+      - 2. products
+    put:
+      consumes:
+      - application/json
+      description: Mengubah data produk yang sudah ada
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Data Update
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      summary: Update data produk
+      tags:
+      - 2. products
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Mengambil daftar kategori
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Category'
+            type: array
+      summary: Ambil semua kategori
+      tags:
+      - 1. categories
+    post:
+      consumes:
+      - application/json
+      description: Membuat kategori baru
+      parameters:
+      - description: Data Kategori
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Category'
+      summary: Tambah kategori
+      tags:
+      - 1. categories
   /categories/{id}:
     delete:
       consumes:
       - application/json
-      description: Remove a category
+      description: Menghapus kategori permanen
       parameters:
       - description: Category ID
         in: path
@@ -201,34 +203,56 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.SuccessResponse'
-      summary: Delete a category
+            additionalProperties:
+              type: string
+            type: object
+      summary: Hapus kategori
       tags:
-      - Categories
+      - 1. categories
+    get:
+      consumes:
+      - application/json
+      description: Mendapatkan kategori berdasarkan ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      summary: Ambil detail kategori
+      tags:
+      - 1. categories
     put:
       consumes:
       - application/json
-      description: Update details of a specific category
+      description: Mengubah data kategori
       parameters:
       - description: Category ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Category Data
+      - description: Data Update
         in: body
-        name: body
+        name: category
         required: true
         schema:
-          $ref: '#/definitions/main.Category'
+          $ref: '#/definitions/models.Category'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Category'
-      summary: Update a category
+            $ref: '#/definitions/models.Category'
+      summary: Update kategori
       tags:
-      - Categories
+      - 1. categories
 swagger: "2.0"

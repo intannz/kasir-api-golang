@@ -17,6 +17,8 @@ func NewProductHandler(service *services.ProductService) *ProductHandler {
 	return &ProductHandler{service: service}
 }
 
+// DISPATCHERS (Jembatan / Satpam)
+
 // dispatcher route "/api/products" (ngga pakai ID)
 func (h *ProductHandler) HandleProducts(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -51,6 +53,16 @@ func (h *ProductHandler) HandleProductByID(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+// LOGIC HANDLERS
+
+// GetAll godoc
+// @Summary      Ambil semua produk
+// @Description  Mengambil daftar semua produk
+// @Tags         2. products
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   models.Product
+// @Router       /api/products [get]
 func (h *ProductHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	products, err := h.service.GetAll()
 	if err != nil {
@@ -62,6 +74,15 @@ func (h *ProductHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products)
 }
 
+// Create godoc
+// @Summary      Tambah produk baru
+// @Description  Menambahkan data produk ke database
+// @Tags         2. products
+// @Accept       json
+// @Produce      json
+// @Param        product body models.Product true "Data Produk"
+// @Success      201  {object}  models.Product
+// @Router       /api/products [post]
 func (h *ProductHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var product models.Product
 	// decode JSON Body
@@ -81,6 +102,15 @@ func (h *ProductHandler) Create(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(product)
 }
 
+// GetByID godoc
+// @Summary      Ambil produk berdasarkan ID
+// @Description  Mendapatkan detail satu produk
+// @Tags         2. products
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Product ID"
+// @Success      200  {object}  models.Product
+// @Router       /api/products/{id} [get]
 func (h *ProductHandler) GetByID(w http.ResponseWriter, r *http.Request, id int) {
 	product, err := h.service.GetByID(id)
 	if err != nil {
@@ -92,6 +122,16 @@ func (h *ProductHandler) GetByID(w http.ResponseWriter, r *http.Request, id int)
 	json.NewEncoder(w).Encode(product)
 }
 
+// Update godoc
+// @Summary      Update data produk
+// @Description  Mengubah data produk yang sudah ada
+// @Tags         2. products
+// @Accept       json
+// @Produce      json
+// @Param        id       path      int             true  "Product ID"
+// @Param        product  body      models.Product  true  "Data Update"
+// @Success      200      {object}  models.Product
+// @Router       /api/products/{id} [put]
 func (h *ProductHandler) Update(w http.ResponseWriter, r *http.Request, id int) {
 	var product models.Product
 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
@@ -111,6 +151,15 @@ func (h *ProductHandler) Update(w http.ResponseWriter, r *http.Request, id int) 
 	json.NewEncoder(w).Encode(product)
 }
 
+// Delete godoc
+// @Summary      Hapus produk
+// @Description  Menghapus produk berdasarkan ID
+// @Tags         2. products
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Product ID"
+// @Success      200  {object}  map[string]string
+// @Router       /api/products/{id} [delete]
 func (h *ProductHandler) Delete(w http.ResponseWriter, r *http.Request, id int) {
 	if err := h.service.Delete(id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
