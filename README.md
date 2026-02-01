@@ -10,25 +10,67 @@ Aplikasi ini sudah di-deploy menggunakan **Zeabur** dan memiliki dokumentasi len
 👉 **Akses Dokumentasi API (Swagger):**
 [https://kasir-api-toko.zeabur.app/swagger/index.html](https://kasir-api-toko.zeabur.app/swagger/index.html)
 
+## ⚠️ PENTING: Panduan Testing (Urutan Eksekusi)
+Karena API ini menggunakan **Relational Database** (Product membutuhkan Category), harap ikuti urutan tes berikut agar tidak terjadi error:
+
+### 1️⃣ Langkah 1: Buat Kategori (Category)
+Anda **WAJIB** membuat minimal satu kategori terlebih dahulu sebagai "wadah" untuk produk.
+* **Endpoint:** `POST /categories`
+* **Contoh Body:**
+    ```json
+    {
+      "name": "Makanan Berat",
+      "description": "Nasi dan Lauk Pauk"
+    }
+    ```
+* *Catat ID yang terbentuk (Misal: ID = 1).*
+
+### 2️⃣ Langkah 2: Buat Produk (Product)
+Setelah kategori ada, baru Anda bisa membuat produk. Pastikan `categoryId` diisi dengan ID kategori yang valid.
+* **Endpoint:** `POST /api/products`
+* **Contoh Body:**
+    ```json
+    {
+      "name": "Nasi Goreng Spesial",
+      "price": 25000,
+      "stock": 50,
+      "categoryId": 1  <-- Wajib ID Kategori yang SUDAH ADA
+    }
+    ```
+
+### 3️⃣ Langkah 3: Cek Hasil Join (Explore Join)
+Untuk melihat implementasi **SQL INNER JOIN**, panggil endpoint Get All Products. API akan mengembalikan data produk lengkap dengan **Nama Kategori**-nya.
+* **Endpoint:** `GET /api/products`
+* **Hasil Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "name": "Nasi Goreng Spesial",
+        "price": 25000,
+        "categoryId": 1,
+        "categoryName": "Makanan Berat"  <-- Data dari tabel Categories (Hasil Join)
+      }
+    ]
+    ```
+
+---
 
 ## 🚀 Fitur
 
-* **Database Storage:** Data disimpan secara permanen di **PostgreSQL** (via Supabase), tidak hilang saat server restart.
-* **Framework Gin:** Routing dan handling request lebih cepat dan efisien menggunakan Gin Gonic.
-* **Configuration Management:** Pengaturan environment (Database URL, Port) dikelola menggunakan **Viper**.
-* **CRUD Lengkap:** Create, Read, Update, Delete untuk Produk dan Kategori.
-* **API Documentation:** Dokumentasi interaktif otomatis dengan Swagger.
+* **Database Persistent:** Data disimpan aman di PostgreSQL (Supabase).
+* **Relasi One-to-Many:** Satu Kategori memiliki banyak Produk.
+* **SQL Join Query:** Endpoint produk menampilkan data gabungan dari tabel Kategori.
+* **Environment Config:** Konfigurasi sensitif (DB URL) aman menggunakan `.env`.
+* **Auto Docs:** Dokumentasi otomatis via Swagger.
 
 ## 🛠️ Teknologi
 
-* **Golang** (v1.20+)
-* **Gin Gonic** (Web Framework)
+* **Golang** (Backend Logic)
 * **PostgreSQL** (Database)
-* **Supabase** (Cloud Database Provider)
-* **Viper** (Config Management)
-* **lib/pq** (Postgres Driver)
-* **Swaggo** (Swagger Docs Generator)
-* **Zeabur** (Deployment)
+* **Lib/PQ** (Postgres Driver)
+* **Swaggo** (API Documentation)
+* **Zeabur** (Cloud Deployment)
 
 ## ⚠️ Catatan Khusus (Supabase User)
 
@@ -56,24 +98,24 @@ go get github.com/lib/pq@v1.10.9
 
 ## 🔗 Daftar Endpoint Utama
 
-Gunakan Swagger UI untuk pengetesan yang lebih mudah, atau gunakan Postman/cURL:
+Gunakan Swagger UI untuk pengetesan yang lebih mudah.
 
-### 🛒 Products
-| Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/products` | Ambil semua produk | - |
-| `GET` | `/api/products/{id}` | Ambil 1 produk | - |
-| `POST` | `/api/products` | Tambah produk | `{ "name": "Latte", "price": 18000, "stock": 20 }` |
-| `PUT` | `/api/products/{id}` | Update produk | `{ "name": "Latte Edit", "price": 20000, "stock": 15 }` |
-| `DELETE`| `/api/products/{id}` | Hapus produk | - |
-
-### 🏷️ Categories
+### 🏷️ Categories (Buat Ini dulu karena Products butuh categoryId)
 | Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
 | :--- | :--- | :--- | :--- |
 | `GET` | `/categories` | Ambil semua kategori | - |
 | `POST` | `/categories` | Tambah kategori | `{ "name": "Minuman", "description": "Aneka Kopi" }` |
 | `PUT` | `/categories/{id}` | Update kategori | `{ "name": "Beverages", "description": "Coffee & Tea" }` |
 | `DELETE`| `/categories/{id}` | Hapus kategori | - |
+
+### 🛒 Products (Butuh categoryId)
+| Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/products` | Ambil semua produk | - |
+| `GET` | `/api/products/{id}` | Ambil 1 produk | - |
+| `POST` | `/api/products` | Tambah produk | `{ "name": "Latte", "price": 18000, "stock": 20, "categoryId": 1 }` |
+| `PUT` | `/api/products/{id}` | Update produk | `{ "name": "Latte Edit", "price": 20000, "stock": 15, "categoryId": 1 }` |
+| `DELETE`| `/api/products/{id}` | Hapus produk | - |
 
 ---
 **Happy Building! 🚀**
