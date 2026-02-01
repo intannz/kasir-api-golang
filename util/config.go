@@ -19,8 +19,16 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
-	if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-		return
+	if err != nil {
+		// 2. INI KUNCINYA:
+		// Cek jenis errornya. Kalau errornya cuma "File Gak Ketemu", ABAIKAN.
+		// Jangan langsung return error.
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// File gak ada? Gpp, lanjut aja. Kita kan punya environment variable.
+		} else {
+			// Kalau errornya lain (misal syntax salah), baru lapor error.
+			return
+		}
 	}
 
 	err = viper.Unmarshal(&config)
