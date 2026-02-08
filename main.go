@@ -48,6 +48,10 @@ func main() {
 	categoryService := services.NewCategoryService(categoryRepo)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
 
+	transactionRepo := repositories.NewTransactionRepository(db)
+	transactionService := services.NewTransactionService(transactionRepo)
+	transactionHandler := handlers.NewTransactionHandler(transactionService)
+
 	// Setup routes
 	// Route produk
 	http.HandleFunc("/api/products", productHandler.HandleProducts)
@@ -56,6 +60,10 @@ func main() {
 	// Route kategori
 	http.HandleFunc("/categories", categoryHandler.HandleCategories)
 	http.HandleFunc("/categories/", categoryHandler.HandleCategoryByID)
+
+	// Route checkout & report
+	http.HandleFunc("/api/checkout", transactionHandler.HandleCheckout)
+	http.HandleFunc("/api/report", transactionHandler.HandleReport)
 
 	// swagger
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)

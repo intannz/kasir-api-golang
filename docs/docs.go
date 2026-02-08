@@ -18,6 +18,40 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/checkout": {
+            "post": {
+                "description": "User membeli barang, stok berkurang, transaksi tercatat",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "3. Transactions"
+                ],
+                "summary": "Proses Transaksi (Checkout)",
+                "parameters": [
+                    {
+                        "description": "Item yang dibeli",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CheckoutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Transaction"
+                        }
+                    }
+                }
+            }
+        },
         "/api/products": {
             "get": {
                 "description": "Mengambil daftar semua produk",
@@ -175,6 +209,43 @@ const docTemplate = `{
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/report": {
+            "get": {
+                "description": "Mendapatkan total omzet, jumlah transaksi, dan produk terlaris. Default: Hari ini.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "3. Transactions"
+                ],
+                "summary": "Ambil Laporan Penjualan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tanggal Mulai (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tanggal Akhir (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SalesReport"
                         }
                     }
                 }
@@ -344,6 +415,19 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.BestSellerItem": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string",
+                    "example": "Indomie Goreng"
+                },
+                "qty_terjual": {
+                    "type": "integer",
+                    "example": 50
+                }
+            }
+        },
         "models.Category": {
             "type": "object",
             "properties": {
@@ -358,6 +442,30 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Minuman"
+                }
+            }
+        },
+        "models.CheckoutItem": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 2
+                }
+            }
+        },
+        "models.CheckoutRequest": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CheckoutItem"
+                    }
                 }
             }
         },
@@ -387,6 +495,74 @@ const docTemplate = `{
                 "stock": {
                     "type": "integer",
                     "example": 100
+                }
+            }
+        },
+        "models.SalesReport": {
+            "type": "object",
+            "properties": {
+                "produk_terlaris": {
+                    "$ref": "#/definitions/models.BestSellerItem"
+                },
+                "total_revenue": {
+                    "type": "integer",
+                    "example": 450000
+                },
+                "total_transaksi": {
+                    "type": "integer",
+                    "example": 15
+                }
+            }
+        },
+        "models.Transaction": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-02-01T14:00:00Z"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TransactionDetail"
+                    }
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 101
+                },
+                "total_amount": {
+                    "type": "integer",
+                    "example": 45000
+                }
+            }
+        },
+        "models.TransactionDetail": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 505
+                },
+                "product_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "product_name": {
+                    "type": "string",
+                    "example": "Indomie Goreng"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "subtotal": {
+                    "type": "integer",
+                    "example": 15000
+                },
+                "transaction_id": {
+                    "type": "integer",
+                    "example": 101
                 }
             }
         }

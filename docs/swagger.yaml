@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  models.BestSellerItem:
+    properties:
+      nama:
+        example: Indomie Goreng
+        type: string
+      qty_terjual:
+        example: 50
+        type: integer
+    type: object
   models.Category:
     properties:
       description:
@@ -11,6 +20,22 @@ definitions:
       name:
         example: Minuman
         type: string
+    type: object
+  models.CheckoutItem:
+    properties:
+      product_id:
+        example: 1
+        type: integer
+      quantity:
+        example: 2
+        type: integer
+    type: object
+  models.CheckoutRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.CheckoutItem'
+        type: array
     type: object
   models.Product:
     properties:
@@ -33,6 +58,54 @@ definitions:
         example: 100
         type: integer
     type: object
+  models.SalesReport:
+    properties:
+      produk_terlaris:
+        $ref: '#/definitions/models.BestSellerItem'
+      total_revenue:
+        example: 450000
+        type: integer
+      total_transaksi:
+        example: 15
+        type: integer
+    type: object
+  models.Transaction:
+    properties:
+      created_at:
+        example: "2026-02-01T14:00:00Z"
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/models.TransactionDetail'
+        type: array
+      id:
+        example: 101
+        type: integer
+      total_amount:
+        example: 45000
+        type: integer
+    type: object
+  models.TransactionDetail:
+    properties:
+      id:
+        example: 505
+        type: integer
+      product_id:
+        example: 2
+        type: integer
+      product_name:
+        example: Indomie Goreng
+        type: string
+      quantity:
+        example: 5
+        type: integer
+      subtotal:
+        example: 15000
+        type: integer
+      transaction_id:
+        example: 101
+        type: integer
+    type: object
 info:
   contact:
     email: intan.maharani6763@gmail.com
@@ -41,6 +114,28 @@ info:
   title: Kasir API Intan
   version: "1.0"
 paths:
+  /api/checkout:
+    post:
+      consumes:
+      - application/json
+      description: User membeli barang, stok berkurang, transaksi tercatat
+      parameters:
+      - description: Item yang dibeli
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CheckoutRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Proses Transaksi (Checkout)
+      tags:
+      - 3. Transactions
   /api/products:
     get:
       consumes:
@@ -148,6 +243,31 @@ paths:
       summary: Update data produk
       tags:
       - 2. products
+  /api/report:
+    get:
+      consumes:
+      - application/json
+      description: 'Mendapatkan total omzet, jumlah transaksi, dan produk terlaris.
+        Default: Hari ini.'
+      parameters:
+      - description: Tanggal Mulai (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: Tanggal Akhir (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SalesReport'
+      summary: Ambil Laporan Penjualan
+      tags:
+      - 3. Transactions
   /categories:
     get:
       consumes:
