@@ -49,7 +49,7 @@ Untuk melihat implementasi **SQL INNER JOIN**, panggil endpoint Get All Products
         "name": "Nasi Goreng Spesial",
         "price": 25000,
         "categoryId": 1,
-        "categoryName": "Makanan Berat"  <-- Data dari tabel Categories (Hasil Join)
+        "categoryName": "Makanan Berat" 
       }
     ]
     ```
@@ -110,11 +110,15 @@ go get github.com/lib/pq@v1.10.9
     ```bash
     cd kasir-api-golang
     ```
-3.  Jalankan server:
+3.  Download library yang dibutuhkan:
+    ```bash
+    go mod tidy
+    ```
+4.  Jalankan server:
     ```bash
     go run main.go
     ```
-4.  Buka Swagger di browser:
+5.  Buka Swagger di browser:
     `http://localhost:8080/swagger/index.html`
 
 ## 🔗 Daftar Endpoint Utama
