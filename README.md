@@ -53,6 +53,23 @@ Untuk melihat implementasi **SQL INNER JOIN**, panggil endpoint Get All Products
       }
     ]
     ```
+### 4️⃣ Langkah 4: Proses Checkout (Transaksi)
+Setelah produk dibuat dan memiliki stok, Anda bisa mencoba fitur transaksi. Fitur ini sudah dilengkapi dengan **Database Transaction** (Anti data korup) dan **Row Locking** (Anti rebutan stok).
+* **Endpoint:** `POST /api/checkout`
+* **Contoh Body:**
+    ```json
+    {
+      "items": [
+        { "product_id": 1, "quantity": 2 }
+      ]
+    }
+    ```
+* *💡 Tips: Cek kembali endpoint `GET /api/products` setelah checkout berhasil. Stok produk otomatis berkurang!*
+
+### 5️⃣ Langkah 5: Cek Laporan Penjualan (Report)
+Setelah melakukan beberapa transaksi, Anda bisa melihat ringkasan omzet dan produk paling laku terjual.
+* **Endpoint:** `GET /api/report` (Default: Hari Ini)
+* **Contoh dengan Filter Tanggal:** `GET /api/report?start_date=2026-02-01&end_date=2026-02-28`
 
 ---
 
@@ -63,6 +80,10 @@ Untuk melihat implementasi **SQL INNER JOIN**, panggil endpoint Get All Products
 * **SQL Join Query:** Endpoint produk menampilkan data gabungan dari tabel Kategori.
 * **Environment Config:** Konfigurasi sensitif (DB URL) aman menggunakan `.env`.
 * **Auto Docs:** Dokumentasi otomatis via Swagger.
+* **Database Transaction (ACID):** Menjamin keamanan data saat *checkout*. Jika terjadi error di tengah proses, seluruh perubahan akan di-*rollback*.
+* **Row-Level Locking (`FOR UPDATE`):** Mencegah *race condition* saat kasir memproses barang yang sama bersamaan, memastikan stok tidak pernah minus.
+* **Search & Filter:** Pencarian produk berdasarkan nama menggunakan URL Query Parameter.
+* **Data Aggregation:** Query SQL tingkat lanjut (`SUM`, `COUNT`, `GROUP BY`) untuk menghasilkan laporan penjualan.
 
 ## 🛠️ Teknologi
 
@@ -111,11 +132,16 @@ Gunakan Swagger UI untuk pengetesan yang lebih mudah.
 ### 🛒 Products (Butuh categoryId)
 | Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/products` | Ambil semua produk | - |
+| `GET` | `/api/products` | Ambil semua produk (Bisa tambah `?name=indomie` untuk pencarian) | - |
 | `GET` | `/api/products/{id}` | Ambil 1 produk | - |
 | `POST` | `/api/products` | Tambah produk | `{ "name": "Latte", "price": 18000, "stock": 20, "categoryId": 1 }` |
 | `PUT` | `/api/products/{id}` | Update produk | `{ "name": "Latte Edit", "price": 20000, "stock": 15, "categoryId": 1 }` |
 | `DELETE`| `/api/products/{id}` | Hapus produk | - |
 
+### 🛍️ Transactions & Reports
+| Method | Endpoint | Deskripsi | Contoh Body Request (JSON) |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/checkout` | Proses pembayaran & potong stok otomatis | `{ "items": [ { "product_id": 1, "quantity": 2 } ] }` |
+| `GET` | `/api/report` | Laporan penjualan (omzet & produk terlaris) | - |
 ---
 **Happy Building! 🚀**
