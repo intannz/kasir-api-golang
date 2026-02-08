@@ -65,6 +65,17 @@ func main() {
 	http.HandleFunc("/api/checkout", transactionHandler.HandleCheckout)
 	http.HandleFunc("/api/report", transactionHandler.HandleReport)
 
+	// health
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
+
+	// route root
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Halo! Server Kasir Jalan. Buka /swagger/index.html untuk dokumentasi."))
+	})
+
 	// swagger
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
